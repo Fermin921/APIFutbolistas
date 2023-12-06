@@ -14,14 +14,15 @@ app.use(cors());
 app.use(express.json());
 app.use(bearerToken());
 
-const data = fs.readFileSync(path.join(__dirname,'./Options.json'),{ encoding: 'utf8', flag: 'r' });
-const obj = JSON.parse(data)
-
-const swaggerOptions = {
-    definition: obj,
-    apis: [`${path.join(__dirname,"./index.js")}`],
-}
-
+const multer = require('multer');
+const folder = path.join(__dirname+'/archivos/');
+const storage = multer.diskStorage({
+    destination : function(req,file,cb) {cb(null,folder)},
+    filename: function (req,file,cb) {cb(null,file.originalname)}
+});
+const upload = multer({storage:storage})
+app.use(express.urlencoded({extended:true}));
+app.use(upload.single('archivo'));
 const PORT = process.env.PORT || 8080
 const PORTE = process.env.MYSQLPORT ;
 const HOST = process.env.MYSQLHOST || 'localhost';
@@ -31,33 +32,40 @@ const DATABASE = process.env.MYSQL_DATABASE || 'Futbolista';
 const URL = process.env.URL
 
 const MySqlConnection = {host : HOST, user : USER, password : PASSWORD, database: DATABASE,port : PORTE}
+const data = fs.readFileSync(path.join(__dirname,'./Options.json'),{ encoding: 'utf8', flag: 'r' });
+const obj = JSON.parse(data)
+
+const swaggerOptions = {
+    definition: obj,
+    apis: [`${path.join(__dirname,"./index.js")}`],
+}
 /**
- * @swagger
- * /futbolistas:
- *   get:
- *     summary: Obtener la lista de futbolistas.
- *     description: Endpoint para obtener todos los futbolistas de la base de datos.
- *     responses:
- *       200:
- *         description: OK. La solicitud fue exitosa.
- *         content:
- *           application/json:
- *             example:
- *               - id: 1
- *                 nombre: "Lionel Messi"
- *                 posicion: "Delantero"
- *                 edad: 34
- *               - id: 2
- *                 nombre: "Cristiano Ronaldo"
- *                 posicion: "Delantero"
- *                 edad: 36
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: "Error en la base de datos. Mensaje específico del error SQL."
- */
+* @swagger
+* /futbolistas:
+*   get:
+*     summary: Obtener la lista de futbolistas.
+*     description: Endpoint para obtener todos los futbolistas de la base de datos.
+*     responses:
+*       200:
+*         description: OK. La solicitud fue exitosa.
+*         content:
+*           application/json:
+*             example:
+*               - id: 1
+*                 nombre: "Lionel Messi"
+*                 posicion: "Delantero"
+*                 edad: 34
+*               - id: 2
+*                 nombre: "Cristiano Ronaldo"
+*                 posicion: "Delantero"
+*                 edad: 36
+*       500:
+*         description: Error interno del servidor.
+*         content:
+*           application/json:
+*             example:
+*               mensaje: "Error en la base de datos. Mensaje específico del error SQL."
+*/
 app.get("/futbolistas", async (req, res) => {    
     try {
         const token = req.token;
