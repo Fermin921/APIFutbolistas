@@ -218,7 +218,7 @@ app.put("/Futbolista/:nombre", async (req, res) => {
         const { posicion,edad,dorsal,nacionalidad } = req.body;
         console.log(req.body);
         await conn.query('UPDATE Futbolista SET  posicion = ? ,edad = ?, dorsal = ?, nacionalidad = ? WHERE nombre = ?', [posicion,edad,dorsal,nacionalidad,req.params.nombre]);
-        res.json({ mensaje: "ACTUALIZADO"+nombre });
+        res.json({ mensaje: "ACTUALIZADO "+req.params.nombre});
     } catch (err) {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
