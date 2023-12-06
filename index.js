@@ -176,52 +176,52 @@ app.post('/insertar', async (req, res) => {
     }
 });
 /**
- * @swagger
- * /Futbolista/{nombre}:
- *   put:
- *     summary: Actualiza la información de un futbolista por su nombre.
- *     description: Endpoint para actualizar los detalles de un futbolista específico en la base de datos.
- *     parameters:
- *       - in: path
- *         name: nombre
- *         required: true
- *         description: Nombre del futbolista que se va a actualizar.
- *         schema:
- *           type: string
- *     requestBody:
- *       description: Datos actualizados del futbolista.
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               posicion:
- *                 type: string
- *                 description: Nueva posición del futbolista.
- *               edad:
- *                 type: integer
- *                 description: Nueva edad del futbolista.
- *               dorsal:
- *                 type: integer
- *                 description: Nuevo dorsal del futbolista.
- *               nacionalidad:
- *                 type: string
- *                 description: Nueva nacionalidad del futbolista.
- *     responses:
- *       200:
- *         description: Se ha actualizado exitosamente la información del futbolista.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Futbolista actualizado correctamente. Nombre: {nombre_actualizado}
- *       500:
- *         description: Error interno del servidor al intentar actualizar la información del futbolista.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Error al actualizar el futbolista en la base de datos. Detalles: {error_message}
- */
+* @swagger
+* /Futbolista/{nombre}:
+*   put:
+*     summary: Actualiza la información de un futbolista por su nombre.
+*     description: Endpoint para actualizar los detalles de un futbolista específico en la base de datos.
+*     parameters:
+*       - in: path
+*         name: nombre
+*         required: true
+*         description: Nombre del futbolista que se va a actualizar.
+*         schema:
+*           type: string
+*     requestBody:
+*       description: Datos actualizados del futbolista.
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               posicion:
+*                 type: string
+*                 description: Nueva posición del futbolista.
+*               edad:
+*                 type: integer
+*                 description: Nueva edad del futbolista.
+*               dorsal:
+*                 type: integer
+*                 description: Nuevo dorsal del futbolista.
+*               nacionalidad:
+*                 type: string
+*                 description: Nueva nacionalidad del futbolista.
+*     responses:
+*       200:
+*         description: Se ha actualizado exitosamente la información del futbolista.
+*         content:
+*           application/json:
+*             example:
+*               mensaje: Futbolista actualizado correctamente. Nombre: {nombre_actualizado}
+*       500:
+*         description: Error interno del servidor al intentar actualizar la información del futbolista.
+*         content:
+*           application/json:
+*             example:
+*               mensaje: Error al actualizar el futbolista en la base de datos. Detalles: {error_message}
+*/
 app.put("/Futbolista/:nombre", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
