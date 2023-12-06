@@ -179,38 +179,48 @@ app.post('/insertar', async (req, res) => {
  * @swagger
  * /Futbolista/{nombre}:
  *   put:
- *     summary: Actualizar información de un futbolista.
- *     description: Endpoint para actualizar la información de un futbolista en la base de datos.
+ *     summary: Actualiza la información de un futbolista por su nombre.
+ *     description: Endpoint para actualizar los detalles de un futbolista específico en la base de datos.
  *     parameters:
  *       - in: path
  *         name: nombre
- *         description: Nombre del futbolista a actualizar.
  *         required: true
+ *         description: Nombre del futbolista que se va a actualizar.
  *         schema:
  *           type: string
  *     requestBody:
+ *       description: Datos actualizados del futbolista.
  *       required: true
  *       content:
  *         application/json:
- *           example:
- *             nombre: "Futbolista Actualizado"
- *             posicion: "Mediocampista"
- *             edad: 28
- *             dorsal: 8
- *             nacionalidad: "España"
+ *           schema:
+ *             type: object
+ *             properties:
+ *               posicion:
+ *                 type: string
+ *                 description: Nueva posición del futbolista.
+ *               edad:
+ *                 type: integer
+ *                 description: Nueva edad del futbolista.
+ *               dorsal:
+ *                 type: integer
+ *                 description: Nuevo dorsal del futbolista.
+ *               nacionalidad:
+ *                 type: string
+ *                 description: Nueva nacionalidad del futbolista.
  *     responses:
  *       200:
- *         description: OK. La solicitud fue exitosa.
+ *         description: Se ha actualizado exitosamente la información del futbolista.
  *         content:
  *           application/json:
  *             example:
- *               mensaje: "ACTUALIZADO Futbolista Actualizado"
+ *               mensaje: Futbolista actualizado correctamente.
  *       500:
- *         description: Error interno del servidor.
+ *         description: Error interno del servidor al intentar actualizar la información del futbolista.
  *         content:
  *           application/json:
  *             example:
- *               mensaje: "Error al actualizar datos. Mensaje específico del error SQL."
+ *               mensaje: Error al actualizar el futbolista en la base de datos. Detalles: {error_message}
  */
 app.put("/Futbolista/:nombre", async (req, res) => {
     try {
