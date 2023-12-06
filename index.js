@@ -214,7 +214,7 @@ app.post('/insertar', async (req, res) => {
  *         content:
  *           application/json:
  *             example:
- *               mensaje: Futbolista actualizado correctamente.
+ *               mensaje: Futbolista actualizado correctamente. Nombre: {nombre_actualizado}
  *       500:
  *         description: Error interno del servidor al intentar actualizar la información del futbolista.
  *         content:
