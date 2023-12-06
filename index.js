@@ -215,9 +215,9 @@ app.post('/insertar', async (req, res) => {
 app.put("/Futbolista/:nombre", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const { nombre,posicion,edad,dorsal,nacionalidad } = req.body;
+        const { posicion,edad,dorsal,nacionalidad } = req.body;
         console.log(req.body);
-        await conn.query('UPDATE Futbolista SET nombre = ?, posicion = ? ,edad = ?, dorsal = ?, nacionalidad = ? WHERE nombre = ?', [nombre,posicion,edad,dorsal,nacionalidad,req.params.nombre]);
+        await conn.query('UPDATE Futbolista SET  posicion = ? ,edad = ?, dorsal = ?, nacionalidad = ? WHERE nombre = ?', [posicion,edad,dorsal,nacionalidad,req.params.nombre]);
         res.json({ mensaje: "ACTUALIZADO"+nombre });
     } catch (err) {
         res.status(500).json({ mensaje: err.sqlMessage });
