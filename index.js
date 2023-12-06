@@ -31,7 +31,33 @@ const DATABASE = process.env.MYSQL_DATABASE || 'Futbolista';
 const URL = process.env.URL
 
 const MySqlConnection = {host : HOST, user : USER, password : PASSWORD, database: DATABASE,port : PORTE}
-
+/**
+ * @swagger
+ * /futbolistas:
+ *   get:
+ *     summary: Obtener la lista de futbolistas.
+ *     description: Endpoint para obtener todos los futbolistas de la base de datos.
+ *     responses:
+ *       200:
+ *         description: OK. La solicitud fue exitosa.
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 nombre: "Lionel Messi"
+ *                 posicion: "Delantero"
+ *                 edad: 34
+ *               - id: 2
+ *                 nombre: "Cristiano Ronaldo"
+ *                 posicion: "Delantero"
+ *                 edad: 36
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Error en la base de datos. Mensaje específico del error SQL."
+ */
 app.get("/futbolistas", async (req, res) => {    
     try {
         const token = req.token;
@@ -44,7 +70,46 @@ app.get("/futbolistas", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-
+/**
+ * @swagger
+ * /Futbolistas/{posicion}:
+ *   get:
+ *     summary: Obtener futbolistas por posición.
+ *     description: Endpoint para obtener futbolistas filtrados por su posición.
+ *     parameters:
+ *       - in: path
+ *         name: posicion
+ *         description: Posición del futbolista a buscar.
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK. La solicitud fue exitosa.
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 nombre: "Lionel Messi"
+ *                 posicion: "Delantero"
+ *                 edad: 34
+ *               - id: 2
+ *                 nombre: "Cristiano Ronaldo"
+ *                 posicion: "Delantero"
+ *                 edad: 36
+ *       404:
+ *         description: No encontrado. No se encontraron futbolistas con la posición especificada.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Usuario no encontrado"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Error en la base de datos. Mensaje específico del error SQL."
+ */
 app.get("/Futbolistas/:posicion",async(req,res)=>{    
     console.log(req.params.posicion);
         
@@ -58,7 +123,36 @@ app.get("/Futbolistas/:posicion",async(req,res)=>{
         res.json(rows);
     }
 });
-
+/**
+ * @swagger
+ * /insertar:
+ *   post:
+ *     summary: Insertar un nuevo futbolista.
+ *     description: Endpoint para agregar un nuevo futbolista a la base de datos.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           example:
+ *             nombre: "Nuevo Futbolista"
+ *             posicion: "Delantero"
+ *             edad: 25
+ *             dorsal: 10
+ *             nacionalidad: "Argentina"
+ *     responses:
+ *       200:
+ *         description: OK. La solicitud fue exitosa.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Datos insertados correctamente de Nuevo Futbolista"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Error al insertar datos. Mensaje específico del error SQL."
+ */
 app.post('/insertar', async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
@@ -73,7 +167,43 @@ app.post('/insertar', async (req, res) => {
         res.status(500).json({ message: 'Error al insertar datos' });
     }
 });
-
+/**
+ * @swagger
+ * /Futbolista/{nombre}:
+ *   put:
+ *     summary: Actualizar información de un futbolista.
+ *     description: Endpoint para actualizar la información de un futbolista en la base de datos.
+ *     parameters:
+ *       - in: path
+ *         name: nombre
+ *         description: Nombre del futbolista a actualizar.
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           example:
+ *             nombre: "Futbolista Actualizado"
+ *             posicion: "Mediocampista"
+ *             edad: 28
+ *             dorsal: 8
+ *             nacionalidad: "España"
+ *     responses:
+ *       200:
+ *         description: OK. La solicitud fue exitosa.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "ACTUALIZADO Futbolista Actualizado"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Error al actualizar datos. Mensaje específico del error SQL."
+ */
 app.put("/Futbolista/:nombre", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
@@ -85,7 +215,39 @@ app.put("/Futbolista/:nombre", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-
+/**
+ * @swagger
+ * /Futbolista/{nombre}:
+ *   delete:
+ *     summary: Eliminar un futbolista.
+ *     description: Endpoint para eliminar un futbolista de la base de datos.
+ *     parameters:
+ *       - in: path
+ *         name: nombre
+ *         description: Nombre del futbolista a eliminar.
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK. La solicitud fue exitosa.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Registro Eliminado [nombre del futbolista]"
+ *       404:
+ *         description: No encontrado. El futbolista con el nombre especificado no existe.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Registro No Eliminado"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensaje: "Error al eliminar datos. Mensaje específico del error SQL."
+ */
 app.delete("/Futbolista/:nombre", async (req, res) => {    
     try {
         const conn = await mysql.createConnection(MySqlConnection);
